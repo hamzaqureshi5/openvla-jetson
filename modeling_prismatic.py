@@ -756,68 +756,174 @@ class OpenVLAForActionPrediction(PrismaticForConditionalGeneration):
                 ),
                 dim=1,
             )
-        # print(f"Input ids shape after modification: {input_ids.shape}")
-        # Generated IDs: torch.Size([1, 30])
-        # Generated IDs: tensor([[    1,   512, 29901,  1724,  3158,   881,   278, 19964,  2125,   304, 426, 29966,  1177, 10810, 29965,  9838, 29958, 29913, 29973,13,3744, 29901, 29871, 31838, 31884, 31828, 31904, 31876, 31898, 31872]],device='cuda:0')
-        # Predicted action token IDs: [31838 31884 31828 31904 31876 31898 31872]
-        # Discretized actions: [161 115 171  95 123 101 127]
-        # Normalized actions: [ 0.26666667 -0.09411765  0.34509804 -0.25098039 -0.03137255 -0.20392157 0.        ]
-        # Unnormalized actions: [ 0.00739614 -0.00430924  0.01846618 -0.0199353  -0.0101587  -0.04358526 0.        ]
-
+        
         # Run VLA inference
-        generated_ids = self.generate(
-            input_ids, max_new_tokens=self.get_action_dim(unnorm_key), **kwargs
-        )
-        print("")
-        print("=======================================================================================================================")
-        print("=================================================  DECODER START  =====================================================")
-        print("=======================================================================================================================")
-        print("")
-        print(f"Input ids shape after modification: {input_ids.shape}")
-        print(f"Input ids shape after modification: {input_ids}")
-        print(
-            f"Running generation with max_new_tokens={self.get_action_dim(unnorm_key)}"
-        )
-        print(f"Generated IDs [predict_actions()]: {generated_ids.shape}")
-        print(f"Generated IDs: {generated_ids}")
+        # generated_ids = self.generate(
+        #     input_ids, max_new_tokens=self.get_action_dim(unnorm_key), **kwargs
+        # )
 
-        # Extract predicted action tokens and translate into (normalized) continuous actions
+        # print(f"Input ids shape after modification: {input_ids.shape}")
+        # print(f"Input ids shape after modification: {input_ids}")
+        # print(
+        #     f"Running generation with max_new_tokens={self.get_action_dim(unnorm_key)}"
+        # )
+        # print(f"Generated IDs [predict_actions()]: {generated_ids.shape}")
+        # print(f"Generated IDs: {generated_ids}")
+
+        # # Extract predicted action tokens and translate into (normalized) continuous actions
+        # predicted_action_token_ids = (
+        #     generated_ids[0, -self.get_action_dim(unnorm_key) :].cpu().numpy()
+        # )
+        # print(f"Predicted action token IDs: {predicted_action_token_ids}")
+        # discretized_actions = self.vocab_size - predicted_action_token_ids
+        # discretized_actions = np.clip(
+        #     discretized_actions - 1, a_min=0, a_max=self.bin_centers.shape[0] - 1
+        # )
+        # normalized_actions = self.bin_centers[discretized_actions]
+
+        # print(f"Discretized actions: {discretized_actions}")
+        # print(f"Normalized actions: {normalized_actions}")
+
+        # # Unnormalize actions
+        # action_norm_stats = self.get_action_stats(unnorm_key)
+        # mask = action_norm_stats.get(
+        #     "mask", np.ones_like(action_norm_stats["q01"], dtype=bool)
+        # )
+        # action_high, action_low = np.array(action_norm_stats["q99"]), np.array(
+        #     action_norm_stats["q01"]
+        # )
+        # actions = np.where(
+        #     mask,
+        #     0.5 * (normalized_actions + 1) * (action_high - action_low) + action_low,
+        #     normalized_actions,
+        # )
+
+        # ======================================================================
+        # DECODER PHASE
+        # ======================================================================
+
+        print("\n" + "=" * 120)
+        print("🧠 DECODER PHASE START")
+        print("=" * 120)
+
+        # -------------------------------------------------
+        # Step 1 — Input to decoder
+        # -------------------------------------------------
+
+        print("\n[Step 1] Decoder Input")
+        print("-" * 80)
+
+        print(f"Input IDs Shape           : {input_ids.shape}")
+        print(f"Input IDs Tensor          :\n{input_ids}")
+
+        action_dim = self.get_action_dim(unnorm_key)
+
+        print(f"\nAction Dimension          : {action_dim}")
+        print(f"Max New Tokens to Generate: {action_dim}")
+
+        # -------------------------------------------------
+        # Step 2 — Run Generation
+        # -------------------------------------------------
+
+        print("\n[Step 2] Running Autoregressive Generation")
+        print("-" * 80)
+
+        generated_ids = self.generate(
+            input_ids,
+            max_new_tokens=action_dim,
+            **kwargs
+        )
+
+        print(f"Generated IDs Shape       : {generated_ids.shape}")
+        print(f"Generated Token IDs       :\n{generated_ids}")
+
+        # -------------------------------------------------
+        # Step 3 — Extract Action Tokens
+        # -------------------------------------------------
+
+        print("\n[Step 3] Extract Action Tokens")
+        print("-" * 80)
+
         predicted_action_token_ids = (
-            generated_ids[0, -self.get_action_dim(unnorm_key) :].cpu().numpy()
+            generated_ids[0, -action_dim:].cpu().numpy()
         )
-        print(f"Predicted action token IDs: {predicted_action_token_ids}")
+
+        print(f"Action Token Slice        : generated_ids[0, -{action_dim}:]")
+        print(f"Predicted Action Tokens   : {predicted_action_token_ids}")
+
+        # -------------------------------------------------
+        # Step 4 — Convert Tokens → Discrete Action Bins
+        # -------------------------------------------------
+
+        print("\n[Step 4] Convert Tokens → Discretized Actions")
+        print("-" * 80)
+
+        print(f"Vocabulary Size           : {self.vocab_size}")
+
         discretized_actions = self.vocab_size - predicted_action_token_ids
+
+        print(f"After vocab inversion     : {discretized_actions}")
+
         discretized_actions = np.clip(
-            discretized_actions - 1, a_min=0, a_max=self.bin_centers.shape[0] - 1
+            discretized_actions - 1,
+            a_min=0,
+            a_max=self.bin_centers.shape[0] - 1
         )
+
+        print(f"After clipping            : {discretized_actions}")
+        print(f"Number of bins            : {self.bin_centers.shape[0]}")
+
+        # -------------------------------------------------
+        # Step 5 — Map Bins → Normalized Actions
+        # -------------------------------------------------
+
+        print("\n[Step 5] Map Bins → Normalized Actions")
+        print("-" * 80)
+
         normalized_actions = self.bin_centers[discretized_actions]
 
-        print(f"Discretized actions: {discretized_actions}")
-        print(f"Normalized actions: {normalized_actions}")
+        print(f"Bin Centers Shape         : {self.bin_centers.shape}")
+        print(f"Normalized Actions        : {normalized_actions}")
 
-        # Unnormalize actions
+        # -------------------------------------------------
+        # Step 6 — Unnormalize Actions
+        # -------------------------------------------------
+
+        print("\n[Step 6] Convert Normalized → Real World Actions")
+        print("-" * 80)
+
         action_norm_stats = self.get_action_stats(unnorm_key)
+
         mask = action_norm_stats.get(
-            "mask", np.ones_like(action_norm_stats["q01"], dtype=bool)
+            "mask",
+            np.ones_like(action_norm_stats["q01"], dtype=bool)
         )
-        action_high, action_low = np.array(action_norm_stats["q99"]), np.array(
-            action_norm_stats["q01"]
-        )
+
+        action_high = np.array(action_norm_stats["q99"])
+        action_low = np.array(action_norm_stats["q01"])
+
+        print(f"Action High (q99)         : {action_high}")
+        print(f"Action Low  (q01)         : {action_low}")
+        print(f"Mask                      : {mask}")
+
         actions = np.where(
             mask,
             0.5 * (normalized_actions + 1) * (action_high - action_low) + action_low,
-            normalized_actions,
+            normalized_actions
         )
 
-        print("")
-        print("=======================================================================================================================")
-        print("=================================================  DECODER  END  ======================================================")
-        print("=======================================================================================================================")
-        print("")
-        print(f"Unnormalized actions: {actions}")
+        # -------------------------------------------------
+        # Final Output
+        # -------------------------------------------------
+
+        print("\n" + "=" * 120)
+        print("🏁 DECODER PHASE END")
+        print("=" * 120)
+
+        print(f"\nFinal Continuous Actions  : {actions}\n")
         print("")
         print(
-            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Action Prediction  END %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Action Prediction  END %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
         )
         return actions
 

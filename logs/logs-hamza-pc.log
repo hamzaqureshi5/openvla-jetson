@@ -1,6 +1,9 @@
-==============================PrismaticForConditionalGeneration================================
-
-------------------------------------------- PrismaticVisionBackbone __init__() ----------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%PrismaticForConditionalGeneration%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+=======================================================================================================================
+=======================================================================================================================
+------------------------------------------ PrismaticVisionBackbone __init__() -----------------------------------------
+=======================================================================================================================
+=======================================================================================================================
 Initializing featurizer with model: vit_large_patch14_reg4_dinov2.lvd142m, image size: 224
 Featurizer embed_dim: 1024
 
@@ -9,204 +12,218 @@ Fused Featurizer embed_dim: 1152
 Total embed_dim after fusion: 2176
 Patching featurizers with LayerScale...
 
-------------------------------------------- PrismaticVisionBackbone __init__() ----------------------------
-config.n_action_bins:  256
-self.bins, self.bin_centers : [-1.         -0.99215686 -0.98431373 -0.97647059 -0.96862745] [-0.99607843 -0.98823529 -0.98039216 -0.97254902 -0.96470588]
-length of self.bins, self.bin_centers : 256 255
-------------------------------------------- PrismaticProcessor __call__() START------------------------------------------
-------------------------------------------- PrismaticProcessor __call__() START------------------------------------------
-------------------------------------------- PrismaticProcessor __call__() START------------------------------------------
+=======================================================================================================================
+=======================================================================================================================
+------------------------------------------ PrismaticVisionBackbone __init__() -----------------------------------------
+=======================================================================================================================
+=======================================================================================================================
+
+Initializing bins ....
+=======================================================================================================================
+=======================================================================================================================
+------------------------------------------ PrismaticProcessor __call__() START-----------------------------------------
+=======================================================================================================================
+=======================================================================================================================
 Image pixel values shape before ImageProcessing: (4691, 3127)
 Image pixel values shape after ImageProcessing: torch.Size([1, 6, 224, 224])
 Text input IDs [Tokenized] shape: torch.Size([1, 23])
+input_ids: torch.Size([1, 23])
+attention_mask: torch.Size([1, 23])
+pixel_values: torch.Size([1, 6, 224, 224])
+=======================================================================================================================
+=======================================================================================================================
+------------------------------------------ PrismaticProcessor __call__() END-------------------------------------------
+=======================================================================================================================
+=======================================================================================================================
 
- Collective Data [PrismaticProcessor]:  dict_keys(['input_ids', 'attention_mask', 'pixel_values']) 
-
-------------------------------------------- PrismaticProcessor __call__() END--------------------------------------------
-------------------------------------------- PrismaticProcessor __call__() END--------------------------------------------
-------------------------------------------- PrismaticProcessor __call__() END--------------------------------------------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass START 1--------------------------------
-torch.Size([1, 23])
-
---- Multimodal Forward ---
-Pixel Values Shape [Before VisionBackbone]:: torch.Size([1, 6, 224, 224])
-
-------------------------------------------- PrismaticVisionBackbone Forward Pass  VIT (START)----------------------------
-------------------------------------------- PrismaticVisionBackbone Forward Pass  VIT (START)----------------------------
-------------------------------------------- PrismaticVisionBackbone Forward Pass  VIT (START)----------------------------
-
-Input pixel_values shape: torch.Size([1, 6, 224, 224])
-Using fused vision backbone, splitting input...
-Shape of img (first featurizer): torch.Size([1, 3, 224, 224])
-Shape of img_fused (second featurizer): torch.Size([1, 3, 224, 224])
-Shape of patches from first featurizer: torch.Size([1, 256, 1024])
-Shape of patches from fused featurizer: torch.Size([1, 256, 1152])
-Combined patches shape: torch.Size([1, 256, 2176])
-
--------------------------------------------- PrismaticVisionBackbone Forward Pass VIT (END)-----------------------------
--------------------------------------------- PrismaticVisionBackbone Forward Pass VIT (END)----------------------------
--------------------------------------------- PrismaticVisionBackbone Forward Pass VIT (END)----------------------------
-
-Patch Features Shape [After VisionBackbone]: torch.Size([1, 256, 2176])
-
-------------------------------------------- PrismaticProjector Forward Pass (START) ----------------------------------
-------------------------------------------- PrismaticProjector Forward Pass (START) ----------------------------------
-------------------------------------------- PrismaticProjector Forward Pass (START) ----------------------------------
-
-Input shape: torch.Size([1, 256, 2176])
-Shape after fc1: torch.Size([1, 256, 8704])
-Shape after act_fn1: torch.Size([1, 256, 8704])
-Shape after fc2: torch.Size([1, 256, 4096])
-Shape after act_fn2: torch.Size([1, 256, 4096])
-Shape after fc3: torch.Size([1, 256, 4096])
-Output Shape : torch.Size([1, 256, 4096])
-
--------------------------------------------- PrismaticProjector Forward Pass (END)------------------------------------
--------------------------------------------- PrismaticProjector Forward Pass (END)------------------------------------
--------------------------------------------- PrismaticProjector Forward Pass (END)------------------------------------
-
-Projected Patch Embeddings Shape: torch.Size([1, 256, 4096])
-EMBEDDING:  Embedding(32064, 4096, padding_idx=32000)
-Input Embeddings Shape: torch.Size([1, 23, 4096])
-Multimodal Embeddings Shape: torch.Size([1, 279, 4096])
-language_model_output [logits] tensor([[[ 2.5938,  4.4062,  0.5703,  ...,  4.2500,  4.1250,  3.0625],
-         [-4.2812, -6.5000,  1.5391,  ..., -3.8125, -3.2656, -1.3281],
-         [-6.7500, -6.5625, -1.3594,  ..., -2.9375, -4.0000, -4.8438],
-         ...,
-         [ 2.5156,  3.7812,  0.6719,  ...,  4.0625,  3.9688,  2.9688],
-         [-8.2500, -8.9375, -0.1914,  ..., -9.0000, -8.1250, -8.3125],
-         [-7.4688, -8.0625, -1.8203,  ..., -8.5000, -7.4375, -7.8125]]],
-       device='cuda:0', grad_fn=<ToCopyBackward0>)
-DEBUG: output logits shape: torch.Size([1, 279, 32064])
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass END --------------------------------
-
-------------------------------------------- Action Prediction START ------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Action Prediction  START %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Adding special empty token ('') at the end of input_ids
-dict_keys(['austin_buds_dataset_converted_externally_to_rlds', 'austin_sailor_dataset_converted_externally_to_rlds', 'austin_sirius_dataset_converted_externally_to_rlds', 'bc_z', 'berkeley_autolab_ur5', 'berkeley_cable_routing', 'berkeley_fanuc_manipulation', 'bridge_orig', 'cmu_stretch', 'dlr_edan_shared_control_converted_externally_to_rlds', 'dobbe', 'fmb_dataset', 'fractal20220817_data', 'furniture_bench_dataset_converted_externally_to_rlds', 'iamlab_cmu_pickup_insert_converted_externally_to_rlds', 'jaco_play', 'kuka', 'nyu_franka_play_dataset_converted_externally_to_rlds', 'roboturk', 'stanford_hydra_dataset_converted_externally_to_rlds', 'taco_play', 'toto', 'ucsd_kitchen_dataset_converted_externally_to_rlds', 'utaustin_mutex', 'viola'])
-unnorm_key {'mask': [True, True, True, True, True, True, False], 'max': [0.41691166162490845, 0.25864794850349426, 0.21218234300613403, 3.122201919555664, 1.8618112802505493, 6.280478477478027, 1.0], 'mean': [0.0002334194869035855, 0.00013004911306779832, -0.00012762474943883717, -0.0001556558854645118, -0.0004039328487124294, 0.00023557482927571982, 0.5764579176902771], 'min': [-0.4007510244846344, -0.13874775171279907, -0.22553899884223938, -3.2010786533355713, -1.8618112802505493, -6.279075622558594, 0.0], 'q01': [-0.02872725307941437, -0.04170349963009357, -0.026093858778476715, -0.08092105075716972, -0.09288699507713317, -0.20718276381492615, 0.0], 'q99': [0.028309678435325586, 0.040855254605412394, 0.040161586627364146, 0.08192047759890528, 0.07792850524187081, 0.20382574498653397, 1.0], 'std': [0.009765930473804474, 0.013689135201275349, 0.012667362578213215, 0.028534092009067535, 0.030637972056865692, 0.07691419124603271, 0.4973701536655426]}
 
----------------------------------- PrismaticForConditionalGeneration Forward Pass START 2--------------------------------
-torch.Size([1, 24])
+========================================================================================================================
+🧠 DECODER PHASE START
+========================================================================================================================
 
---- Multimodal Forward ---
-Pixel Values Shape [Before VisionBackbone]:: torch.Size([1, 6, 224, 224])
-
-------------------------------------------- PrismaticVisionBackbone Forward Pass  VIT (START)----------------------------
-------------------------------------------- PrismaticVisionBackbone Forward Pass  VIT (START)----------------------------
-------------------------------------------- PrismaticVisionBackbone Forward Pass  VIT (START)----------------------------
-
-Input pixel_values shape: torch.Size([1, 6, 224, 224])
-Using fused vision backbone, splitting input...
-Shape of img (first featurizer): torch.Size([1, 3, 224, 224])
-Shape of img_fused (second featurizer): torch.Size([1, 3, 224, 224])
-Shape of patches from first featurizer: torch.Size([1, 256, 1024])
-Shape of patches from fused featurizer: torch.Size([1, 256, 1152])
-Combined patches shape: torch.Size([1, 256, 2176])
-
--------------------------------------------- PrismaticVisionBackbone Forward Pass VIT (END)-----------------------------
--------------------------------------------- PrismaticVisionBackbone Forward Pass VIT (END)----------------------------
--------------------------------------------- PrismaticVisionBackbone Forward Pass VIT (END)----------------------------
-
-Patch Features Shape [After VisionBackbone]: torch.Size([1, 256, 2176])
-
-------------------------------------------- PrismaticProjector Forward Pass (START) ----------------------------------
-------------------------------------------- PrismaticProjector Forward Pass (START) ----------------------------------
-------------------------------------------- PrismaticProjector Forward Pass (START) ----------------------------------
-
-Input shape: torch.Size([1, 256, 2176])
-Shape after fc1: torch.Size([1, 256, 8704])
-Shape after act_fn1: torch.Size([1, 256, 8704])
-Shape after fc2: torch.Size([1, 256, 4096])
-Shape after act_fn2: torch.Size([1, 256, 4096])
-Shape after fc3: torch.Size([1, 256, 4096])
-Output Shape : torch.Size([1, 256, 4096])
-
--------------------------------------------- PrismaticProjector Forward Pass (END)------------------------------------
--------------------------------------------- PrismaticProjector Forward Pass (END)------------------------------------
--------------------------------------------- PrismaticProjector Forward Pass (END)------------------------------------
-
-Projected Patch Embeddings Shape: torch.Size([1, 256, 4096])
-EMBEDDING:  Embedding(32064, 4096, padding_idx=32000)
-Input Embeddings Shape: torch.Size([1, 24, 4096])
-Multimodal Embeddings Shape: torch.Size([1, 280, 4096])
-language_model_output [logits] tensor([[[  2.5938,   4.4062,   0.5703,  ...,   4.2500,   4.1250,   3.0625],
-         [ -4.2812,  -6.5000,   1.5391,  ...,  -3.8125,  -3.2656,  -1.3281],
-         [ -6.7500,  -6.5625,  -1.3594,  ...,  -2.9375,  -4.0000,  -4.8438],
-         ...,
-         [ -8.2500,  -8.9375,  -0.1914,  ...,  -9.0000,  -8.1250,  -8.3125],
-         [ -7.4688,  -8.0625,  -1.8203,  ...,  -8.5000,  -7.4375,  -7.8125],
-         [ -8.8750, -11.5000,  -4.8125,  ..., -10.0625, -10.1875,  -8.4375]]],
-       device='cuda:0')
-DEBUG: output logits shape: torch.Size([1, 280, 32064])
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass END --------------------------------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass START 3--------------------------------
-torch.Size([1, 1])
---------- Generation with Cache ---------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass END --------------------------------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass START 4--------------------------------
-torch.Size([1, 1])
---------- Generation with Cache ---------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass END --------------------------------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass START 5--------------------------------
-torch.Size([1, 1])
---------- Generation with Cache ---------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass END --------------------------------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass START 6--------------------------------
-torch.Size([1, 1])
---------- Generation with Cache ---------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass END --------------------------------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass START 7--------------------------------
-torch.Size([1, 1])
---------- Generation with Cache ---------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass END --------------------------------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass START 8--------------------------------
-torch.Size([1, 1])
---------- Generation with Cache ---------
-
----------------------------------- PrismaticForConditionalGeneration Forward Pass END --------------------------------
-Input ids shape after modification: torch.Size([1, 24])
-Input ids shape after modification: tensor([[    1,   512, 29901,  1724,  3158,   881,   278, 19964,   278,  2125,
+[Step 1] Decoder Input
+--------------------------------------------------------------------------------
+Input IDs Shape           : torch.Size([1, 24])
+Input IDs Tensor          :
+tensor([[    1,   512, 29901,  1724,  3158,   881,   278, 19964,   278,  2125,
            304,   426, 29966,  1177, 10810, 29965,  9838, 29958, 29913, 29973,
             13,  3744, 29901, 29871]], device='cuda:0')
-bridge_orig
-dict_keys(['austin_buds_dataset_converted_externally_to_rlds', 'austin_sailor_dataset_converted_externally_to_rlds', 'austin_sirius_dataset_converted_externally_to_rlds', 'bc_z', 'berkeley_autolab_ur5', 'berkeley_cable_routing', 'berkeley_fanuc_manipulation', 'bridge_orig', 'cmu_stretch', 'dlr_edan_shared_control_converted_externally_to_rlds', 'dobbe', 'fmb_dataset', 'fractal20220817_data', 'furniture_bench_dataset_converted_externally_to_rlds', 'iamlab_cmu_pickup_insert_converted_externally_to_rlds', 'jaco_play', 'kuka', 'nyu_franka_play_dataset_converted_externally_to_rlds', 'roboturk', 'stanford_hydra_dataset_converted_externally_to_rlds', 'taco_play', 'toto', 'ucsd_kitchen_dataset_converted_externally_to_rlds', 'utaustin_mutex', 'viola'])
-Running generation with max_new_tokens {'mask': [True, True, True, True, True, True, False], 'max': [0.02338407188653946, 0.0, 0.023404927924275398, 0.0, 0.0, 0.0, 1.0], 'mean': [0.00036304505192674696, 0.0, 0.0016466958913952112, 0.0, 0.0, 0.0, 0.3987048268318176], 'min': [-0.019353797659277916, 0.0, -0.02019215188920498, 0.0, 0.0, 0.0, 0.0], 'q01': [-0.011175686959177256, 0.0, -0.0032206363626755773, 0.0, 0.0, 0.0, 0.0], 'q99': [0.014501785952597848, 0.0, 0.015056106168776728, 0.0, 0.0, 0.0, 1.0], 'std': [0.004081828519701958, 0.0, 0.0037743328139185905, 0.0, 0.0, 0.0, 0.48963725566864014]}
-dict_keys(['austin_buds_dataset_converted_externally_to_rlds', 'austin_sailor_dataset_converted_externally_to_rlds', 'austin_sirius_dataset_converted_externally_to_rlds', 'bc_z', 'berkeley_autolab_ur5', 'berkeley_cable_routing', 'berkeley_fanuc_manipulation', 'bridge_orig', 'cmu_stretch', 'dlr_edan_shared_control_converted_externally_to_rlds', 'dobbe', 'fmb_dataset', 'fractal20220817_data', 'furniture_bench_dataset_converted_externally_to_rlds', 'iamlab_cmu_pickup_insert_converted_externally_to_rlds', 'jaco_play', 'kuka', 'nyu_franka_play_dataset_converted_externally_to_rlds', 'roboturk', 'stanford_hydra_dataset_converted_externally_to_rlds', 'taco_play', 'toto', 'ucsd_kitchen_dataset_converted_externally_to_rlds', 'utaustin_mutex', 'viola'])
-unnorm_key {'mask': [True, True, True, True, True, True, False], 'max': [0.02338407188653946, 0.0, 0.023404927924275398, 0.0, 0.0, 0.0, 1.0], 'mean': [0.00036304505192674696, 0.0, 0.0016466958913952112, 0.0, 0.0, 0.0, 0.3987048268318176], 'min': [-0.019353797659277916, 0.0, -0.02019215188920498, 0.0, 0.0, 0.0, 0.0], 'q01': [-0.011175686959177256, 0.0, -0.0032206363626755773, 0.0, 0.0, 0.0, 0.0], 'q99': [0.014501785952597848, 0.0, 0.015056106168776728, 0.0, 0.0, 0.0, 1.0], 'std': [0.004081828519701958, 0.0, 0.0037743328139185905, 0.0, 0.0, 0.0, 0.48963725566864014]}
-Running generation with max_new_tokens 7
-dict_keys(['austin_buds_dataset_converted_externally_to_rlds', 'austin_sailor_dataset_converted_externally_to_rlds', 'austin_sirius_dataset_converted_externally_to_rlds', 'bc_z', 'berkeley_autolab_ur5', 'berkeley_cable_routing', 'berkeley_fanuc_manipulation', 'bridge_orig', 'cmu_stretch', 'dlr_edan_shared_control_converted_externally_to_rlds', 'dobbe', 'fmb_dataset', 'fractal20220817_data', 'furniture_bench_dataset_converted_externally_to_rlds', 'iamlab_cmu_pickup_insert_converted_externally_to_rlds', 'jaco_play', 'kuka', 'nyu_franka_play_dataset_converted_externally_to_rlds', 'roboturk', 'stanford_hydra_dataset_converted_externally_to_rlds', 'taco_play', 'toto', 'ucsd_kitchen_dataset_converted_externally_to_rlds', 'utaustin_mutex', 'viola'])
-unnorm_key {'mask': [True, True, True, True, True, True, False], 'max': [0.41691166162490845, 0.25864794850349426, 0.21218234300613403, 3.122201919555664, 1.8618112802505493, 6.280478477478027, 1.0], 'mean': [0.0002334194869035855, 0.00013004911306779832, -0.00012762474943883717, -0.0001556558854645118, -0.0004039328487124294, 0.00023557482927571982, 0.5764579176902771], 'min': [-0.4007510244846344, -0.13874775171279907, -0.22553899884223938, -3.2010786533355713, -1.8618112802505493, -6.279075622558594, 0.0], 'q01': [-0.02872725307941437, -0.04170349963009357, -0.026093858778476715, -0.08092105075716972, -0.09288699507713317, -0.20718276381492615, 0.0], 'q99': [0.028309678435325586, 0.040855254605412394, 0.040161586627364146, 0.08192047759890528, 0.07792850524187081, 0.20382574498653397, 1.0], 'std': [0.009765930473804474, 0.013689135201275349, 0.012667362578213215, 0.028534092009067535, 0.030637972056865692, 0.07691419124603271, 0.4973701536655426]}
-Running generation with max_new_tokens=7
-Generated IDs [predict_actions()]: torch.Size([1, 31])
-Generated IDs: tensor([[    1,   512, 29901,  1724,  3158,   881,   278, 19964,   278,  2125,
+
+Action Dimension          : 7
+Max New Tokens to Generate: 7
+
+[Step 2] Running Autoregressive Generation
+--------------------------------------------------------------------------------
+
+=======================================================================================================================
+=============================== PrismaticForConditionalGeneration Forward Pass START 0 ================================
+=======================================================================================================================
+tensor([[    1,   512, 29901,  1724,  3158,   881,   278, 19964,   278,  2125,
+           304,   426, 29966,  1177, 10810, 29965,  9838, 29958, 29913, 29973,
+            13,  3744, 29901, 29871]], device='cuda:0')
+torch.Size([1, 24])
+================ Multimodal Forward ================
+Pixel Values Shape [Before VisionBackbone]:: torch.Size([1, 6, 224, 224])
+
+#######################################################################################################################
+#######################################################################################################################
+##################################### PrismaticVisionBackbone Forward Pass  VIT (START)################################
+#######################################################################################################################
+#######################################################################################################################
+
+Input pixel_values shape: torch.Size([1, 6, 224, 224])
+Using fused vision backbone, splitting input...
+Shape of img (first featurizer): torch.Size([1, 3, 224, 224])
+Shape of img_fused (second featurizer): torch.Size([1, 3, 224, 224])
+Shape of patches from first featurizer: torch.Size([1, 256, 1024])
+Shape of patches from fused featurizer: torch.Size([1, 256, 1152])
+Combined patches shape: torch.Size([1, 256, 2176])
+
+#######################################################################################################################
+#######################################################################################################################
+################################# PrismaticVisionBackbone Forward Pass VIT (END)#######################################
+#######################################################################################################################
+#######################################################################################################################
+
+Patch Features Shape [After VisionBackbone]: torch.Size([1, 256, 2176])
+
+#######################################################################################################################
+#######################################################################################################################
+------------------------------------------- PrismaticProjector Forward Pass (START) -----------------------------------
+#######################################################################################################################
+#######################################################################################################################
+
+Input shape: torch.Size([1, 256, 2176])
+Shape after fc1: torch.Size([1, 256, 8704])
+Shape after act_fn1: torch.Size([1, 256, 8704])
+Shape after fc2: torch.Size([1, 256, 4096])
+Shape after act_fn2: torch.Size([1, 256, 4096])
+Shape after fc3: torch.Size([1, 256, 4096])
+Output Shape : torch.Size([1, 256, 4096])
+
+#######################################################################################################################
+#######################################################################################################################
+-------------------------------------------- PrismaticProjector Forward Pass (END)------------------------------------
+#######################################################################################################################
+#######################################################################################################################
+
+Projected Patch Embeddings Shape: torch.Size([1, 256, 4096])
+Input Embeddings Shape: torch.Size([1, 24, 4096])
+Multimodal Embeddings Shape: torch.Size([1, 280, 4096])
+DEBUG: output logits shape: torch.Size([1, 280, 32064])
+=======================================================================================================================
+================================ PrismaticForConditionalGeneration Forward Pass END 0 =================================
+=======================================================================================================================
+
+
+=======================================================================================================================
+=============================== PrismaticForConditionalGeneration Forward Pass START 1 ================================
+=======================================================================================================================
+tensor([[31838]], device='cuda:0')
+torch.Size([1, 1])
+================ Generation with KV CACHE ================
+=======================================================================================================================
+================================ PrismaticForConditionalGeneration Forward Pass END 1 =================================
+=======================================================================================================================
+
+
+=======================================================================================================================
+=============================== PrismaticForConditionalGeneration Forward Pass START 2 ================================
+=======================================================================================================================
+tensor([[31907]], device='cuda:0')
+torch.Size([1, 1])
+================ Generation with KV CACHE ================
+=======================================================================================================================
+================================ PrismaticForConditionalGeneration Forward Pass END 2 =================================
+=======================================================================================================================
+
+
+=======================================================================================================================
+=============================== PrismaticForConditionalGeneration Forward Pass START 3 ================================
+=======================================================================================================================
+tensor([[31907]], device='cuda:0')
+torch.Size([1, 1])
+================ Generation with KV CACHE ================
+=======================================================================================================================
+================================ PrismaticForConditionalGeneration Forward Pass END 3 =================================
+=======================================================================================================================
+
+
+=======================================================================================================================
+=============================== PrismaticForConditionalGeneration Forward Pass START 4 ================================
+=======================================================================================================================
+tensor([[31851]], device='cuda:0')
+torch.Size([1, 1])
+================ Generation with KV CACHE ================
+=======================================================================================================================
+================================ PrismaticForConditionalGeneration Forward Pass END 4 =================================
+=======================================================================================================================
+
+
+=======================================================================================================================
+=============================== PrismaticForConditionalGeneration Forward Pass START 5 ================================
+=======================================================================================================================
+tensor([[31853]], device='cuda:0')
+torch.Size([1, 1])
+================ Generation with KV CACHE ================
+=======================================================================================================================
+================================ PrismaticForConditionalGeneration Forward Pass END 5 =================================
+=======================================================================================================================
+
+
+=======================================================================================================================
+=============================== PrismaticForConditionalGeneration Forward Pass START 6 ================================
+=======================================================================================================================
+tensor([[31842]], device='cuda:0')
+torch.Size([1, 1])
+================ Generation with KV CACHE ================
+=======================================================================================================================
+================================ PrismaticForConditionalGeneration Forward Pass END 6 =================================
+=======================================================================================================================
+
+Generated IDs Shape       : torch.Size([1, 31])
+Generated Token IDs       :
+tensor([[    1,   512, 29901,  1724,  3158,   881,   278, 19964,   278,  2125,
            304,   426, 29966,  1177, 10810, 29965,  9838, 29958, 29913, 29973,
             13,  3744, 29901, 29871, 31838, 31907, 31907, 31851, 31853, 31842,
          31872]], device='cuda:0')
-dict_keys(['austin_buds_dataset_converted_externally_to_rlds', 'austin_sailor_dataset_converted_externally_to_rlds', 'austin_sirius_dataset_converted_externally_to_rlds', 'bc_z', 'berkeley_autolab_ur5', 'berkeley_cable_routing', 'berkeley_fanuc_manipulation', 'bridge_orig', 'cmu_stretch', 'dlr_edan_shared_control_converted_externally_to_rlds', 'dobbe', 'fmb_dataset', 'fractal20220817_data', 'furniture_bench_dataset_converted_externally_to_rlds', 'iamlab_cmu_pickup_insert_converted_externally_to_rlds', 'jaco_play', 'kuka', 'nyu_franka_play_dataset_converted_externally_to_rlds', 'roboturk', 'stanford_hydra_dataset_converted_externally_to_rlds', 'taco_play', 'toto', 'ucsd_kitchen_dataset_converted_externally_to_rlds', 'utaustin_mutex', 'viola'])
-unnorm_key {'mask': [True, True, True, True, True, True, False], 'max': [0.41691166162490845, 0.25864794850349426, 0.21218234300613403, 3.122201919555664, 1.8618112802505493, 6.280478477478027, 1.0], 'mean': [0.0002334194869035855, 0.00013004911306779832, -0.00012762474943883717, -0.0001556558854645118, -0.0004039328487124294, 0.00023557482927571982, 0.5764579176902771], 'min': [-0.4007510244846344, -0.13874775171279907, -0.22553899884223938, -3.2010786533355713, -1.8618112802505493, -6.279075622558594, 0.0], 'q01': [-0.02872725307941437, -0.04170349963009357, -0.026093858778476715, -0.08092105075716972, -0.09288699507713317, -0.20718276381492615, 0.0], 'q99': [0.028309678435325586, 0.040855254605412394, 0.040161586627364146, 0.08192047759890528, 0.07792850524187081, 0.20382574498653397, 1.0], 'std': [0.009765930473804474, 0.013689135201275349, 0.012667362578213215, 0.028534092009067535, 0.030637972056865692, 0.07691419124603271, 0.4973701536655426]}
-Predicted action token IDs: [31838 31907 31907 31851 31853 31842 31872]
-Discretized actions: [161  92  92 148 146 157 127]
-Normalized actions: [ 0.26666667 -0.2745098  -0.2745098   0.16470588  0.14901961  0.23529412
+
+[Step 3] Extract Action Tokens
+--------------------------------------------------------------------------------
+Action Token Slice        : generated_ids[0, -7:]
+Predicted Action Tokens   : [31838 31907 31907 31851 31853 31842 31872]
+
+[Step 4] Convert Tokens → Discretized Actions
+--------------------------------------------------------------------------------
+Vocabulary Size           : 32000
+After vocab inversion     : [162  93  93 149 147 158 128]
+After clipping            : [161  92  92 148 146 157 127]
+Number of bins            : 255
+
+[Step 5] Map Bins → Normalized Actions
+--------------------------------------------------------------------------------
+Bin Centers Shape         : (255,)
+Normalized Actions        : [ 0.26666667 -0.2745098  -0.2745098   0.16470588  0.14901961  0.23529412
   0.        ]
-dict_keys(['austin_buds_dataset_converted_externally_to_rlds', 'austin_sailor_dataset_converted_externally_to_rlds', 'austin_sirius_dataset_converted_externally_to_rlds', 'bc_z', 'berkeley_autolab_ur5', 'berkeley_cable_routing', 'berkeley_fanuc_manipulation', 'bridge_orig', 'cmu_stretch', 'dlr_edan_shared_control_converted_externally_to_rlds', 'dobbe', 'fmb_dataset', 'fractal20220817_data', 'furniture_bench_dataset_converted_externally_to_rlds', 'iamlab_cmu_pickup_insert_converted_externally_to_rlds', 'jaco_play', 'kuka', 'nyu_franka_play_dataset_converted_externally_to_rlds', 'roboturk', 'stanford_hydra_dataset_converted_externally_to_rlds', 'taco_play', 'toto', 'ucsd_kitchen_dataset_converted_externally_to_rlds', 'utaustin_mutex', 'viola'])
-Unnormalized actions: [ 0.00739614 -0.01175572 -0.00206002  0.01391019  0.00524818  0.04667543
+
+[Step 6] Convert Normalized → Real World Actions
+--------------------------------------------------------------------------------
+Action High (q99)         : [0.02830968 0.04085525 0.04016159 0.08192048 0.07792851 0.20382574
+ 1.        ]
+Action Low  (q01)         : [-0.02872725 -0.0417035  -0.02609386 -0.08092105 -0.092887   -0.20718276
+  0.        ]
+Mask                      : [True, True, True, True, True, True, False]
+
+========================================================================================================================
+🏁 DECODER PHASE END
+========================================================================================================================
+
+Final Continuous Actions  : [ 0.00739614 -0.01175572 -0.00206002  0.01391019  0.00524818  0.04667543
   0.        ]
 
 
-------------------------------------------- Action Prediction  END------------------------------------
-[ 0.00739614 -0.01175572 -0.00206002  0.01391019  0.00524818  0.04667543
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Action Prediction  END %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Action 0: [ 0.00739614 -0.01175572 -0.00206002  0.01391019  0.00524818  0.04667543
   0.        ]

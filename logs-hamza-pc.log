@@ -1,0 +1,86 @@
+==============================PrismaticForConditionalGeneration================================
+
+------------------------------------------- PrismaticVisionBackbone __init__() ----------------------------
+Initializing featurizer with model: vit_large_patch14_reg4_dinov2.lvd142m, image size: 224
+Featurizer embed_dim: 1024
+
+Initializing fused featurizer with model: vit_so400m_patch14_siglip_224, image size: 224
+Fused Featurizer embed_dim: 1152
+Total embed_dim after fusion: 2176
+Patching featurizers with LayerScale...
+
+------------------------------------------- PrismaticVisionBackbone __init__() ----------------------------
+config.n_action_bins:  256
+self.bins, self.bin_centers : [-1.         -0.99215686 -0.98431373 -0.97647059 -0.96862745] [-0.99607843 -0.98823529 -0.98039216 -0.97254902 -0.96470588]
+length of self.bins, self.bin_centers : 256 255
+------------------------------------------- PrismaticProcessor __call__() START------------------------------------------
+------------------------------------------- PrismaticProcessor __call__() START------------------------------------------
+------------------------------------------- PrismaticProcessor __call__() START------------------------------------------
+Image pixel values shape before ImageProcessing: (4691, 3127)
+Image pixel values shape after ImageProcessing: torch.Size([1, 6, 224, 224])
+Text input IDs [Tokenized] shape: torch.Size([1, 22])
+
+ Collective Data [PrismaticProcessor]:  dict_keys(['input_ids', 'attention_mask', 'pixel_values']) 
+
+------------------------------------------- PrismaticProcessor __call__() END--------------------------------------------
+------------------------------------------- PrismaticProcessor __call__() END--------------------------------------------
+------------------------------------------- PrismaticProcessor __call__() END--------------------------------------------
+
+---------------------------------- PrismaticForConditionalGeneration Forward Pass START --------------------------------
+tensor([[    1,   512, 29901,  1724,  3158,   881,   278, 19964,  2125,   304,
+           426, 29966,  1177, 10810, 29965,  9838, 29958, 29913, 29973,    13,
+          3744, 29901]], device='cuda:0')
+torch.Size([1, 22])
+
+--- Multimodal Forward ---
+Pixel Values Shape [Before VisionBackbone]:: torch.Size([1, 6, 224, 224])
+
+------------------------------------------- PrismaticVisionBackbone Forward Pass  VIT (START)----------------------------
+------------------------------------------- PrismaticVisionBackbone Forward Pass  VIT (START)----------------------------
+------------------------------------------- PrismaticVisionBackbone Forward Pass  VIT (START)----------------------------
+
+Input pixel_values shape: torch.Size([1, 6, 224, 224])
+Using fused vision backbone, splitting input...
+Shape of img (first featurizer): torch.Size([1, 3, 224, 224])
+Shape of img_fused (second featurizer): torch.Size([1, 3, 224, 224])
+Shape of patches from first featurizer: torch.Size([1, 256, 1024])
+Shape of patches from fused featurizer: torch.Size([1, 256, 1152])
+Combined patches shape: torch.Size([1, 256, 2176])
+
+-------------------------------------------- PrismaticVisionBackbone Forward Pass VIT (END)-----------------------------
+-------------------------------------------- PrismaticVisionBackbone Forward Pass VIT (END)----------------------------
+-------------------------------------------- PrismaticVisionBackbone Forward Pass VIT (END)----------------------------
+
+Patch Features Shape [After VisionBackbone]: torch.Size([1, 256, 2176])
+
+------------------------------------------- PrismaticProjector Forward Pass (START) ----------------------------------
+------------------------------------------- PrismaticProjector Forward Pass (START) ----------------------------------
+------------------------------------------- PrismaticProjector Forward Pass (START) ----------------------------------
+
+Input shape: torch.Size([1, 256, 2176])
+Shape after fc1: torch.Size([1, 256, 8704])
+Shape after act_fn1: torch.Size([1, 256, 8704])
+Shape after fc2: torch.Size([1, 256, 4096])
+Shape after act_fn2: torch.Size([1, 256, 4096])
+Shape after fc3: torch.Size([1, 256, 4096])
+Output Shape : torch.Size([1, 256, 4096])
+
+-------------------------------------------- PrismaticProjector Forward Pass (END)------------------------------------
+-------------------------------------------- PrismaticProjector Forward Pass (END)------------------------------------
+-------------------------------------------- PrismaticProjector Forward Pass (END)------------------------------------
+
+Projected Patch Embeddings Shape: torch.Size([1, 256, 4096])
+EMBEDDING:  Embedding(32064, 4096, padding_idx=32000)
+Input Embeddings Shape: torch.Size([1, 22, 4096])
+Input Embeddings: tensor([[[ 0.0025, -0.0073, -0.0026,  ..., -0.0120,  0.0009,  0.0035],
+         [-0.0009, -0.0078, -0.0374,  ...,  0.0181,  0.0095,  0.0115],
+         [-0.0006, -0.0044,  0.0021,  ..., -0.0137,  0.0171,  0.0082],
+         ...,
+         [-0.0015, -0.0006, -0.0002,  ...,  0.0009,  0.0020,  0.0021],
+         [ 0.0081,  0.0024,  0.0134,  ..., -0.0073,  0.0308,  0.0093],
+         [-0.0006, -0.0044,  0.0021,  ..., -0.0137,  0.0171,  0.0082]]],
+       device='cuda:0', dtype=torch.bfloat16, grad_fn=<EmbeddingBackward0>)
+Multimodal Embeddings Shape: torch.Size([1, 278, 4096])
+Multimodal Attention Mask Shape: torch.Size([1, 278])
+
+---------------------------------- PrismaticForConditionalGeneration Forward Pass END --------------------------------
