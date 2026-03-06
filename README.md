@@ -1,4 +1,4 @@
-# OpenVLA on NVIDIA Jetson Thor T5000
+# OpenVLA on NVIDIA Jetson AGX Thor
 
 This repository demonstrates **deployment of OpenVLA (Vision-Language-Action) on NVIDIA Jetson Thor T5000**, enabling real-time multimodal inference for robotic control on embedded AI hardware.
 
