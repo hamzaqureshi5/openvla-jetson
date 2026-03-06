@@ -74,11 +74,21 @@ class PrismaticVisionBackbone(nn.Module):
         timm_model_ids: List[str],
         timm_override_act_layers: List[Optional[str]],
     ) -> None:
-        print("=======================================================================================================================")
-        print("=======================================================================================================================")
-        print("------------------------------------------ PrismaticVisionBackbone __init__() -----------------------------------------")
-        print("=======================================================================================================================")
-        print("=======================================================================================================================")
+        print(
+            "======================================================================================================================="
+        )
+        print(
+            "======================================================================================================================="
+        )
+        print(
+            "------------------------------------------ PrismaticVisionBackbone __init__() -----------------------------------------"
+        )
+        print(
+            "======================================================================================================================="
+        )
+        print(
+            "======================================================================================================================="
+        )
         super().__init__()
         self.use_fused_vision_backbone = use_fused_vision_backbone
 
@@ -155,24 +165,44 @@ class PrismaticVisionBackbone(nn.Module):
             for module in self.fused_featurizer.modules():
                 if isinstance(module, LayerScale):
                     ls_apply_patch(module)
-        
+
         print("")
-        print("=======================================================================================================================")
-        print("=======================================================================================================================")
-        print("------------------------------------------ PrismaticVisionBackbone __init__() -----------------------------------------")
-        print("=======================================================================================================================")
-        print("=======================================================================================================================")
+        print(
+            "======================================================================================================================="
+        )
+        print(
+            "======================================================================================================================="
+        )
+        print(
+            "------------------------------------------ PrismaticVisionBackbone __init__() -----------------------------------------"
+        )
+        print(
+            "======================================================================================================================="
+        )
+        print(
+            "======================================================================================================================="
+        )
         print("")
 
     def forward(self, pixel_values: torch.Tensor) -> torch.Tensor:
         """Run image (`pixel_values`) through featurizer; if channel-stacked, then dispatch and sequence stack."""
         # Debug: Check input tensor shape
         print("")
-        print("#######################################################################################################################")
-        print("#######################################################################################################################")
-        print("##################################### PrismaticVisionBackbone Forward Pass  VIT (START)################################")
-        print("#######################################################################################################################")
-        print("#######################################################################################################################")
+        print(
+            "#######################################################################################################################"
+        )
+        print(
+            "#######################################################################################################################"
+        )
+        print(
+            "##################################### PrismaticVisionBackbone Forward Pass  VIT (START)################################"
+        )
+        print(
+            "#######################################################################################################################"
+        )
+        print(
+            "#######################################################################################################################"
+        )
         print("")
 
         print(f"Input pixel_values shape: {pixel_values.shape}")
@@ -203,11 +233,21 @@ class PrismaticVisionBackbone(nn.Module):
         print(f"Combined patches shape: {combined_patches.shape}")
 
         print("")
-        print("#######################################################################################################################")
-        print("#######################################################################################################################")
-        print("################################# PrismaticVisionBackbone Forward Pass VIT (END)#######################################")
-        print("#######################################################################################################################")
-        print("#######################################################################################################################")
+        print(
+            "#######################################################################################################################"
+        )
+        print(
+            "#######################################################################################################################"
+        )
+        print(
+            "################################# PrismaticVisionBackbone Forward Pass VIT (END)#######################################"
+        )
+        print(
+            "#######################################################################################################################"
+        )
+        print(
+            "#######################################################################################################################"
+        )
         print("")
 
         return combined_patches
@@ -236,11 +276,21 @@ class PrismaticProjector(nn.Module):
 
     def forward(self, img_patches: torch.Tensor) -> torch.Tensor:
         print("")
-        print("#######################################################################################################################")
-        print("#######################################################################################################################")
-        print("------------------------------------------- PrismaticProjector Forward Pass (START) -----------------------------------")
-        print("#######################################################################################################################")
-        print("#######################################################################################################################")
+        print(
+            "#######################################################################################################################"
+        )
+        print(
+            "#######################################################################################################################"
+        )
+        print(
+            "------------------------------------------- PrismaticProjector Forward Pass (START) -----------------------------------"
+        )
+        print(
+            "#######################################################################################################################"
+        )
+        print(
+            "#######################################################################################################################"
+        )
         print("")
         print(f"Input shape: {img_patches.shape}")
 
@@ -280,11 +330,21 @@ class PrismaticProjector(nn.Module):
         print(f"Output Shape : {projected_features.shape}")
 
         print("")
-        print("#######################################################################################################################")
-        print("#######################################################################################################################")
-        print("-------------------------------------------- PrismaticProjector Forward Pass (END)------------------------------------")
-        print("#######################################################################################################################")
-        print("#######################################################################################################################")
+        print(
+            "#######################################################################################################################"
+        )
+        print(
+            "#######################################################################################################################"
+        )
+        print(
+            "-------------------------------------------- PrismaticProjector Forward Pass (END)------------------------------------"
+        )
+        print(
+            "#######################################################################################################################"
+        )
+        print(
+            "#######################################################################################################################"
+        )
         print("")
         return projected_features
 
@@ -448,9 +508,15 @@ class PrismaticForConditionalGeneration(PrismaticPreTrainedModel):
         return_dict: Optional[bool] = None,
     ) -> Union[Tuple, PrismaticCausalLMOutputWithPast]:
         print("")
-        print(f"=======================================================================================================================")
-        print(f"=============================== PrismaticForConditionalGeneration Forward Pass START {self.counter} ================================")
-        print(f"=======================================================================================================================")
+        print(
+            f"======================================================================================================================="
+        )
+        print(
+            f"=============================== PrismaticForConditionalGeneration Forward Pass START {self.counter} ================================"
+        )
+        print(
+            f"======================================================================================================================="
+        )
         print(input_ids)
         print(input_ids.shape)
 
@@ -535,18 +601,26 @@ class PrismaticForConditionalGeneration(PrismaticPreTrainedModel):
             )
 
         # === Handle Multimodal Forward ===
-        elif (input_ids.shape[0] == pixel_values.shape[0]) or (inputs_embeds.shape[0] == pixel_values.shape[0]):
-            assert (past_key_values is None), "Unexpected key `past_key_values` provided during language-only forward!"
+        elif (input_ids.shape[0] == pixel_values.shape[0]) or (
+            inputs_embeds.shape[0] == pixel_values.shape[0]
+        ):
+            assert (
+                past_key_values is None
+            ), "Unexpected key `past_key_values` provided during language-only forward!"
             print("================ Multimodal Forward ================")
 
             # Visual Feature Extraction
             print(f"Pixel Values Shape [Before VisionBackbone]:: {pixel_values.shape}")
             patch_features = self.vision_backbone(pixel_values)
-            print(f"Patch Features Shape [After VisionBackbone]: {patch_features.shape}")
+            print(
+                f"Patch Features Shape [After VisionBackbone]: {patch_features.shape}"
+            )
 
             # Projection Logic =>> Update Attention Mask
             projected_patch_embeddings = self.projector(patch_features)
-            print(f"Projected Patch Embeddings Shape: {projected_patch_embeddings.shape}")
+            print(
+                f"Projected Patch Embeddings Shape: {projected_patch_embeddings.shape}"
+            )
             projected_patch_attention_mask = None
 
             if attention_mask is not None:
@@ -644,12 +718,17 @@ class PrismaticForConditionalGeneration(PrismaticPreTrainedModel):
                 f"=> `past_key_values` = {past_key_values is not None}\n"
                 f"=> `use_cache` = {use_cache}"
             )
-        print(f"=======================================================================================================================")
-        print(f"================================ PrismaticForConditionalGeneration Forward Pass END {self.counter} =================================")
-        print(f"=======================================================================================================================")
+        print(
+            f"======================================================================================================================="
+        )
+        print(
+            f"================================ PrismaticForConditionalGeneration Forward Pass END {self.counter} ================================="
+        )
+        print(
+            f"======================================================================================================================="
+        )
         print("")
         self.counter += 1
-
 
         # Unpack `language_model_output` and return PrismaticCausalLMOutputWithPast (or tuple if not `return_dict`)
         if not return_dict:
@@ -741,7 +820,6 @@ class OpenVLAForActionPrediction(PrismaticForConditionalGeneration):
             "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Action Prediction  START %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
         )
 
-
         # If the special empty token ('') does not already appear after the colon (':') token in the prompt
         # (after "OUT:" or "ASSISTANT:"), insert it to match the inputs seen at training time
         # print(f"Input ids shape before modification: {input_ids.shape}")
@@ -756,7 +834,7 @@ class OpenVLAForActionPrediction(PrismaticForConditionalGeneration):
                 ),
                 dim=1,
             )
-        
+
         # Run VLA inference
         # generated_ids = self.generate(
         #     input_ids, max_new_tokens=self.get_action_dim(unnorm_key), **kwargs
@@ -828,11 +906,7 @@ class OpenVLAForActionPrediction(PrismaticForConditionalGeneration):
         print("\n[Step 2] Running Autoregressive Generation")
         print("-" * 80)
 
-        generated_ids = self.generate(
-            input_ids,
-            max_new_tokens=action_dim,
-            **kwargs
-        )
+        generated_ids = self.generate(input_ids, max_new_tokens=action_dim, **kwargs)
 
         print(f"Generated IDs Shape       : {generated_ids.shape}")
         print(f"Generated Token IDs       :\n{generated_ids}")
@@ -844,9 +918,7 @@ class OpenVLAForActionPrediction(PrismaticForConditionalGeneration):
         print("\n[Step 3] Extract Action Tokens")
         print("-" * 80)
 
-        predicted_action_token_ids = (
-            generated_ids[0, -action_dim:].cpu().numpy()
-        )
+        predicted_action_token_ids = generated_ids[0, -action_dim:].cpu().numpy()
 
         print(f"Action Token Slice        : generated_ids[0, -{action_dim}:]")
         print(f"Predicted Action Tokens   : {predicted_action_token_ids}")
@@ -865,9 +937,7 @@ class OpenVLAForActionPrediction(PrismaticForConditionalGeneration):
         print(f"After vocab inversion     : {discretized_actions}")
 
         discretized_actions = np.clip(
-            discretized_actions - 1,
-            a_min=0,
-            a_max=self.bin_centers.shape[0] - 1
+            discretized_actions - 1, a_min=0, a_max=self.bin_centers.shape[0] - 1
         )
 
         print(f"After clipping            : {discretized_actions}")
@@ -895,8 +965,7 @@ class OpenVLAForActionPrediction(PrismaticForConditionalGeneration):
         action_norm_stats = self.get_action_stats(unnorm_key)
 
         mask = action_norm_stats.get(
-            "mask",
-            np.ones_like(action_norm_stats["q01"], dtype=bool)
+            "mask", np.ones_like(action_norm_stats["q01"], dtype=bool)
         )
 
         action_high = np.array(action_norm_stats["q99"])
@@ -909,7 +978,7 @@ class OpenVLAForActionPrediction(PrismaticForConditionalGeneration):
         actions = np.where(
             mask,
             0.5 * (normalized_actions + 1) * (action_high - action_low) + action_low,
-            normalized_actions
+            normalized_actions,
         )
 
         # -------------------------------------------------
